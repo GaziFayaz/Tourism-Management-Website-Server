@@ -47,10 +47,27 @@ async function run() {
       res.send(result)
     })
 
+    app.post("/update-user/:uid", async (req, res) => {
+      const uid = req.params.uid;
+      const touristSpotId = req.body.insertedId
+      const query = {firebase_uid: uid}
+      // console.log("query", query)
+      // console.log(req.body.insertedId)
+      // console.log(uid)
+      const update = {
+        $push: { tourist_spots: touristSpotId}
+      }
+      console.log(update)
+      // const  result = await userCollection.findOne(query)
+      const  result = await userCollection.updateOne(query, update)
+      // console.log(result)
+      res.send(result)
+    })
+
     app.get("/tourist-spots", async (req, res) => {
       const cursor = touristSpotCollection.find()
       const result = await cursor.toArray()
-      res.send()
+      res.send(result)
     })
 
     app.get("/tourist-spot/:id", async (req, res) => {
@@ -64,7 +81,7 @@ async function run() {
       const newTouristSpot = req.body
       console.log(newTouristSpot)
       const result = await touristSpotCollection.insertOne(newTouristSpot)
-      res.send()
+      res.send(result)
     })
 
     app.get("/countries", async (req, res) => {
