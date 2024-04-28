@@ -34,7 +34,7 @@ async function run() {
     })
 
     app.get("/user/:uid", async (req, res) => {
-      const id = req.params.id;
+      const uid = req.params.uid;
       const query = {uid: uid}
       const result = await userCollection.findOne(query)
       res.send(result)
@@ -58,6 +58,13 @@ async function run() {
       const query = {_id: new ObjectId(_id)}
       const result = await touristSpotCollection.findOne(query)
       res.send(result)
+    })
+
+    app.post("/tourist-spot", async (req, res) => {
+      const newTouristSpot = req.body
+      console.log(newTouristSpot)
+      const result = await touristSpotCollection.insertOne(newTouristSpot)
+      res.send()
     })
 
     app.get("/countries", async (req, res) => {
