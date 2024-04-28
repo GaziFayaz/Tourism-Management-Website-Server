@@ -70,18 +70,28 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/user-tourist-spots/:uid", async (req, res) => {
+      const uid = req.params.uid;
+      const query = {firebase_uid: uid}
+      const result = await userCollection.findOne(query)
+      const touristSpotsIds = result.tourist_spots
+      const tsQuery = {_id: {$in: touristSpotsIds.map(id => new ObjectId(id))}}
+      const finalResult = await touristSpotCollection.find(tsQuery).toArray()
+      res.send(finalResult)
+    })
+
     app.get("/tourist-spot/:id", async (req, res) => {
       const _id = req.params.id;
       const query = {_id: new ObjectId(_id)}
       const result = await touristSpotCollection.findOne(query)
-      res.send(result)
+      res.send(result) 
     })
 
     app.post("/tourist-spot", async (req, res) => {
       const newTouristSpot = req.body
       console.log(newTouristSpot)
       const result = await touristSpotCollection.insertOne(newTouristSpot)
-      res.send(result)
+      res.send(result)  
     })
 
     app.get("/countries", async (req, res) => {
