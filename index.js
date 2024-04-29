@@ -96,6 +96,13 @@ async function run() {
       }
     })
 
+    app.get("/country-tourist-spots/:country", async (req, res) => {
+      const country = req.params.country;
+      const query  = {country_name: country}
+      const result = await touristSpotCollection.find(query).toArray()
+      res.send(result)
+    })
+
     app.get("/tourist-spot/:id", async (req, res) => {
       const _id = req.params.id;
       const query = {_id: new ObjectId(_id)}
@@ -127,6 +134,8 @@ async function run() {
       const result = await touristSpotCollection.insertOne(newTouristSpot)
       res.send(result)  
     })
+
+
 
     app.get("/countries", async (req, res) => {
       const cursor = countryCollection.find();
