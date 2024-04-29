@@ -74,10 +74,17 @@ async function run() {
       const uid = req.params.uid;
       const query = {firebase_uid: uid}
       const result = await userCollection.findOne(query)
-      const touristSpotsIds = result.tourist_spots
-      const tsQuery = {_id: {$in: touristSpotsIds.map(id => new ObjectId(id))}}
-      const finalResult = await touristSpotCollection.find(tsQuery).toArray()
-      res.send(finalResult)
+      // if(result.tourist_spots)
+      if(result.tourist_spots.length){
+        const touristSpotsIds = result.tourist_spots
+        const tsQuery = {_id: {$in: touristSpotsIds.map(id => new ObjectId(id))}}
+        const finalResult = await touristSpotCollection.find(tsQuery).toArray()
+        console.log(finalResult)
+        res.send(finalResult)
+      }
+      else{
+        res.send([])
+      }
     })
 
     app.get("/tourist-spot/:id", async (req, res) => {
