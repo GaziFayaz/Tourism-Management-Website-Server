@@ -94,6 +94,17 @@ async function run() {
       res.send(result) 
     })
 
+
+    app.put('/update-tourist-spot/:id', async (req, res) => {
+      const _id = req.params.id
+      const query = {_id: new ObjectId(_id)}
+      const update = {
+        $set: req.body
+      }
+      const result = await touristSpotCollection.updateOne(query, update)
+      res.send(result)
+    })
+
     app.post("/tourist-spot", async (req, res) => {
       const newTouristSpot = req.body
       console.log(newTouristSpot)
