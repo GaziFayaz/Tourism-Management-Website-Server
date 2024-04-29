@@ -105,6 +105,13 @@ async function run() {
       res.send(result)
     })
 
+    app.delete('/delete-tourist-spot/:id', async (req, res) => {
+      const _id = req.params.id
+      const query = {_id: new ObjectId(_id)}
+      const result = await touristSpotCollection.deleteOne(query)
+      res.send(result)
+    })
+
     app.post("/tourist-spot", async (req, res) => {
       const newTouristSpot = req.body
       console.log(newTouristSpot)
