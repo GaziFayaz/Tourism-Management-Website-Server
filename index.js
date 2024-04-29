@@ -70,6 +70,13 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/tourist-spots/:count", async (req, res) => {
+      const count = parseInt(req.params.count)
+      const cursor = touristSpotCollection.find().limit(count)
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
     app.get("/tourist-spots/sort-by-cost", async (req, res) => {
       const options = {
         sort: { avg_cost: 1}
