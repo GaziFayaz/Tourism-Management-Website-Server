@@ -70,6 +70,15 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/tourist-spots/sort-by-cost", async (req, res) => {
+      const options = {
+        sort: { avg_cost: 1}
+      }
+      const cursor = touristSpotCollection.find({}, options)
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
     app.get("/user-tourist-spots/:uid", async (req, res) => {
       const uid = req.params.uid;
       const query = {firebase_uid: uid}
