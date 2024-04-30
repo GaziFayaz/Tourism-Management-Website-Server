@@ -107,7 +107,7 @@ async function run() {
 		app.get("/tourist-spots/sort-by-visitors/:count", async (req, res) => {
 			const count = parseInt(req.params.count);
 			const options = {
-				sort: { visitors: 1 },
+				sort: { visitors: -1 },
 			};
 			const cursor = touristSpotCollection.find({}, options).limit(count);
 			const result = await cursor.toArray();
