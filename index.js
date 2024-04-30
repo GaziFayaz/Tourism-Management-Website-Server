@@ -33,16 +33,23 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/users-count", async (req, res) => {
+      const cursor = userCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
     app.get("/user/:uid", async (req, res) => {
       const uid = req.params.uid;
-      const query = {uid: uid}
+      const query = {firebase_uid: uid}
       const result = await userCollection.findOne(query)
+      // console.log(result)
       res.send(result)
     })
 
     app.post("/user", async (req, res) => {
       const newUser = req.body
-      console.log(newUser)
+      // console.log(newUser)
       const result = await userCollection.insertOne(newUser)
       res.send(result)
     })
@@ -57,7 +64,7 @@ async function run() {
       const update = {
         $push: { tourist_spots: touristSpotId}
       }
-      console.log(update)
+      // console.log(update)
       // const  result = await userCollection.findOne(query)
       const  result = await userCollection.updateOne(query, update)
       // console.log(result)
@@ -73,6 +80,12 @@ async function run() {
     app.get("/tourist-spots/:count", async (req, res) => {
       const count = parseInt(req.params.count)
       const cursor = touristSpotCollection.find().limit(count)
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.get("/tourist-spots-count", async (req, res) => {
+      const cursor = touristSpotCollection.find()
       const result = await cursor.toArray()
       res.send(result)
     })
@@ -95,7 +108,7 @@ async function run() {
         const touristSpotsIds = result.tourist_spots
         const tsQuery = {_id: {$in: touristSpotsIds.map(id => new ObjectId(id))}}
         const finalResult = await touristSpotCollection.find(tsQuery).toArray()
-        console.log(finalResult)
+        // console.log(finalResult) 
         res.send(finalResult)
       }
       else{
@@ -137,7 +150,7 @@ async function run() {
 
     app.post("/tourist-spot", async (req, res) => {
       const newTouristSpot = req.body
-      console.log(newTouristSpot)
+      // console.log(newTouristSpot)
       const result = await touristSpotCollection.insertOne(newTouristSpot)
       res.send(result)  
     })
@@ -148,6 +161,12 @@ async function run() {
       const cursor = countryCollection.find();
       const countries = await cursor.toArray();
       res.send(countries);
+    })
+
+    app.get("/countries-count", async (req, res) => {
+      const cursor = countryCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
     })
 
     // Send a ping to confirm a successful connection
